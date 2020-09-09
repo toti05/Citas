@@ -1,12 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Formulario from './components/Formulario'
 import Cita from './components/Cita'
 
-
-
 function App() {
+  //Citas en localStorage
+  //JSON.parse porque el localStorage solo almacena String
+  let citasIniciales = JSON.parse(localStorage.getItem('citas'));
+  if (!citasIniciales) {
+    citasIniciales = []
+  }
   //Arreglo de citas
   const [citas, guardarCitas] = useState([]);
+
+  //similar did mount,did update en una misma funcion
+  //use Efect para realizar ciertas operaciones cuando el state cambia
+  //se ejecuta cuando el componente esta listo o cuando cambia.
+  useEffect(() => {
+    //let citasIniciales = JSON.parse(localStorage.getItem
+    if (citasIniciales) {
+      localStorage.setItem('citas', JSON.stringify(citas))
+    } else {
+      localStorage.setItem('citas', JSON.stringify([]));
+    }
+    //cada vez que el state de cita cambia se usa el useeffect
+  }, [citas, citasIniciales]);
 
   //Funcion Eliminar cita por su id
   const eliminarCita = id => {
